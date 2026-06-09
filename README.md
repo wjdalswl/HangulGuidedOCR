@@ -3,7 +3,7 @@
 **DeepSolo-style ordered point guidance for Korean Apple Vision OCR.**
 
 [![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org)
-[![Platforms](https://img.shields.io/badge/platforms-iOS%2016%2B%20%7C%20macOS%2013%2B-lightgrey.svg)](https://developer.apple.com/documentation/vision)
+[![Platforms](https://img.shields.io/badge/platforms-iOS%2015%2B%20%7C%20macOS%2012%2B-lightgrey.svg)](https://developer.apple.com/documentation/vision)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 HangulGuidedOCR is a Swift Package for correcting Korean reading-order failures produced by Apple Vision OCR. The library does not replace Apple Vision. Instead, it wraps Vision observations with DeepSolo-inspired ordered point proxies, layout evidence, duplicate suppression, and optional Korean vocabulary priors so that vertical station labels, dispersed poster titles, and stylized Korean layouts can be reconstructed in the order a Korean reader expects.
@@ -15,6 +15,7 @@ HangulGuidedOCR is a Swift Package for correcting Korean reading-order failures 
 
 - [Korean final report](reports/final_report_ko.pdf)
 - [English final report](reports/final_report_en.pdf)
+- [Usage guide](docs/usage.md)
 - [Library design notes](docs/library_design.md)
 - [Method details](docs/method.md)
 - [Experiment protocol](docs/experiment_protocol.md)
@@ -75,22 +76,99 @@ Or add it to `Package.swift`:
 .package(url: "https://github.com/wjdalswl/HangulGuidedOCR.git", branch: "main")
 ```
 
-## Quick Start
+## Usage
+
+Use HangulGuidedOCR as a correction layer around Apple Vision OCR. It is most useful when Vision detects Korean text but returns an unstable reading order, or when a small title/vertical ROI should be proposed before OCR.
+
+Recommended app flow:
+
+1. Run Apple Vision OCR through `HangulGuidedOCR.recognize(_:configuration:)`, or pass an ordered spot proposal through `recognize(_:proposal:configuration:)`.
+2. Read both `result.rawText` and `result.guidedText`.
+3. Keep `strategy: .automatic` for production so ordinary horizontal posters preserve raw Vision order while vertical or dispersed Korean layouts are reordered.
+4. Provide `expectedOrder` only when the app has strong domain knowledge, such as nearby station names, menu terms, or a title vocabulary.
+
+Full guide: [docs/usage.md](docs/usage.md)
+
+### Quick Start: Auto Correction
 
 ```swift
+import CoreGraphics
 import HangulGuidedOCR
 
-let observations: [HangulOCRObservation] = [
-    .init(text: "동대문역사", confidence: 0.91, boundingBox: .init(x: 0.10, y: 0.20, width: 0.12, height: 0.60)),
-    .init(text: "문화공원", confidence: 0.89, boundingBox: .init(x: 0.24, y: 0.20, width: 0.12, height: 0.60))
-]
-
-let result = HangulGuidedOCR().correct(
-    observations,
-    options: .init(strategy: .auto, expectedOrder: ["동대문역사", "문화공원"])
+let configuration = HangulOCRConfiguration(
+    recognitionLevel: .accurate,
+    recognitionLanguages: ["ko-KR", "en-US"],
+    imageTransforms: [
+        .cropNormalized(CGRect(x: 0.32, y: 0.10, width: 0.36, height: 0.78))
+    ],
+    readingGuide: HangulReadingGuide(
+        strategy: .automatic,
+        expectedOrder: ["동대문역사", "문화공원"]
+    )
 )
 
-print(result.text)
+let result = try HangulGuidedOCR().recognize(cgImage, configuration: configuration)
+
+print(result.rawText)
+print(result.guidedText)
+print(result.resolvedStrategy)
+```
+
+### Quick Start: Postprocess Existing Vision Results
+
+```swift
+import CoreGraphics
+import HangulGuidedOCR
+
+let observations = [
+    HangulTextObservation(
+        text: "문화공원",
+        confidence: 0.89,
+        boundingBox: CGRect(x: 0.34, y: 0.10, width: 0.08, height: 0.70)
+    ),
+    HangulTextObservation(
+        text: "동대문역사",
+        confidence: 0.91,
+        boundingBox: CGRect(x: 0.64, y: 0.10, width: 0.08, height: 0.70)
+    )
+]
+
+let resolved = HangulReadingOrderResolver.resolveWithStrategy(
+    observations: observations,
+    guide: HangulReadingGuide(
+        strategy: .automatic,
+        expectedOrder: ["동대문역사", "문화공원"]
+    )
+)
+
+print(resolved.text)
+print(resolved.resolvedStrategy)
+```
+
+### Quick Start: Pre-OCR Ordered Spot Proposal
+
+```swift
+import CoreGraphics
+import HangulGuidedOCR
+
+let titleProposal = HangulSpottingProposal.fromNormalizedRect(
+    CGRect(x: 0.42, y: 0.25, width: 0.18, height: 0.50),
+    direction: .verticalTopToBottom,
+    expectedText: "광복절",
+    normalizationPadding: 0.03,
+    rotation: .clockwise90
+)
+
+let result = try HangulGuidedOCR().recognize(
+    cgImage,
+    proposal: titleProposal,
+    configuration: HangulOCRConfiguration(
+        recognitionLevel: .accurate,
+        readingGuide: HangulReadingGuide(strategy: .automatic)
+    )
+)
+
+print(result.guidedText)
 ```
 
 ## Scope and Limitations
@@ -129,6 +207,7 @@ HangulGuidedOCR는 Apple Vision OCR을 대체하는 새 OCR 엔진이 아닙니�
 
 - [한국어 최종 보고서](reports/final_report_ko.pdf)
 - [영문 최종 보고서](reports/final_report_en.pdf)
+- [사용 가이드](docs/usage.md)
 - [라이브러리 설계 노트](docs/library_design.md)
 - [방법론 설명](docs/method.md)
 - [실험 프로토콜](docs/experiment_protocol.md)
@@ -179,6 +258,101 @@ https://github.com/wjdalswl/HangulGuidedOCR.git
 
 ```swift
 .package(url: "https://github.com/wjdalswl/HangulGuidedOCR.git", branch: "main")
+```
+
+## 사용 방법
+
+HangulGuidedOCR는 Apple Vision OCR 주변에 붙이는 보정 레이어로 사용합니다. Vision이 한국어 텍스트를 검출했지만 읽기 순서가 흔들리는 경우, 또는 OCR 전에 작은 제목/세로 ROI를 먼저 제안해야 하는 경우에 가장 적합합니다.
+
+앱에서 권장하는 흐름은 다음과 같습니다.
+
+1. `HangulGuidedOCR.recognize(_:configuration:)`로 Apple Vision OCR을 실행하거나, `recognize(_:proposal:configuration:)`로 ordered spot proposal을 함께 전달합니다.
+2. `result.rawText`와 `result.guidedText`를 모두 확인합니다.
+3. 실제 서비스에서는 `strategy: .automatic`을 기본값으로 두어 일반 가로 포스터는 raw Vision 순서를 유지하고, 세로/분산 한국어 레이아웃만 재정렬하도록 합니다.
+4. 지하철 역명, 메뉴명, 제목 후보처럼 앱이 강한 도메인 지식을 가진 경우에만 `expectedOrder`를 제공합니다.
+
+자세한 사용 문서: [docs/usage.md](docs/usage.md)
+
+### 빠른 시작: 자동 보정
+
+```swift
+import CoreGraphics
+import HangulGuidedOCR
+
+let configuration = HangulOCRConfiguration(
+    recognitionLevel: .accurate,
+    recognitionLanguages: ["ko-KR", "en-US"],
+    imageTransforms: [
+        .cropNormalized(CGRect(x: 0.32, y: 0.10, width: 0.36, height: 0.78))
+    ],
+    readingGuide: HangulReadingGuide(
+        strategy: .automatic,
+        expectedOrder: ["동대문역사", "문화공원"]
+    )
+)
+
+let result = try HangulGuidedOCR().recognize(cgImage, configuration: configuration)
+
+print(result.rawText)
+print(result.guidedText)
+print(result.resolvedStrategy)
+```
+
+### 빠른 시작: 이미 실행한 Vision 결과 후처리
+
+```swift
+import CoreGraphics
+import HangulGuidedOCR
+
+let observations = [
+    HangulTextObservation(
+        text: "문화공원",
+        confidence: 0.89,
+        boundingBox: CGRect(x: 0.34, y: 0.10, width: 0.08, height: 0.70)
+    ),
+    HangulTextObservation(
+        text: "동대문역사",
+        confidence: 0.91,
+        boundingBox: CGRect(x: 0.64, y: 0.10, width: 0.08, height: 0.70)
+    )
+]
+
+let resolved = HangulReadingOrderResolver.resolveWithStrategy(
+    observations: observations,
+    guide: HangulReadingGuide(
+        strategy: .automatic,
+        expectedOrder: ["동대문역사", "문화공원"]
+    )
+)
+
+print(resolved.text)
+print(resolved.resolvedStrategy)
+```
+
+### 빠른 시작: OCR 전 ordered spot proposal
+
+```swift
+import CoreGraphics
+import HangulGuidedOCR
+
+let titleProposal = HangulSpottingProposal.fromNormalizedRect(
+    CGRect(x: 0.42, y: 0.25, width: 0.18, height: 0.50),
+    direction: .verticalTopToBottom,
+    expectedText: "광복절",
+    normalizationPadding: 0.03,
+    rotation: .clockwise90
+)
+
+let result = try HangulGuidedOCR().recognize(
+    cgImage,
+    proposal: titleProposal,
+    configuration: HangulOCRConfiguration(
+        recognitionLevel: .accurate,
+        readingGuide: HangulReadingGuide(strategy: .automatic)
+    )
+)
+
+print(result.guidedText)
 ```
 
 ## 범위와 한계
