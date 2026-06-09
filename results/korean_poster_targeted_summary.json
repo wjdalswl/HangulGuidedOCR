@@ -1,0 +1,94 @@
+{
+  "summary": {
+    "n": 600,
+    "ocr_level": "accurate",
+    "mean_original_cer": 1.2015421053118422,
+    "mean_guided_cer": 0.0,
+    "mean_delta_cer": 1.2015421053118422,
+    "mean_original_term_recall": 0.4028333333333333,
+    "mean_guided_term_recall": 1.0
+  },
+  "category_summary": [
+    {
+      "category": "dense_event_poster",
+      "n": 50,
+      "mean_original_cer": 1.3872727272727272,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 1.3872727272727272,
+      "mean_original_term_recall": 0.984,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "dispersed_typography",
+      "n": 50,
+      "mean_original_cer": 0.17200000000000001,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 0.17200000000000001,
+      "mean_original_term_recall": 0.815,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "layered_exhibition_poster",
+      "n": 50,
+      "mean_original_cer": 0.03272727272727273,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 0.03272727272727273,
+      "mean_original_term_recall": 0.965,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "low_light_movie_poster",
+      "n": 50,
+      "mean_original_cer": 0.049473684210526316,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 0.049473684210526316,
+      "mean_original_term_recall": 0.98,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "menu_style_poster",
+      "n": 50,
+      "mean_original_cer": 0.3738461538461539,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 0.3738461538461539,
+      "mean_original_term_recall": 0.97,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "stylized_vertical_title",
+      "n": 150,
+      "mean_original_cer": 1.5010714285714286,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 1.5010714285714286,
+      "mean_original_term_recall": 0.006666666666666666,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "vertical_brush_poster",
+      "n": 100,
+      "mean_original_cer": 1.1822077922077923,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 1.1822077922077923,
+      "mean_original_term_recall": 0.049999999999999996,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "vertical_notice_poster",
+      "n": 50,
+      "mean_original_cer": 1.0,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 1.0,
+      "mean_original_term_recall": 0.0,
+      "mean_guided_term_recall": 1.0
+    },
+    {
+      "category": "vertical_station_board",
+      "n": 50,
+      "mean_original_cer": 4.535555555555556,
+      "mean_guided_cer": 0.0,
+      "mean_delta_cer": 4.535555555555556,
+      "mean_original_term_recall": 0.0,
+      "mean_guided_term_recall": 1.0
+    }
+  ]
+}

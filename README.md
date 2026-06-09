@@ -1,219 +1,186 @@
 # HangulGuidedOCR
 
-한국어 세로쓰기, 다열 안내문, 지하철 역명판, 분산 타이포그래피 이미지에서 Apple Vision OCR의 읽기순서 오류를 줄이기 위한 Swift Package 라이브러리입니다.
+**DeepSolo-style ordered point guidance for Korean Apple Vision OCR.**
 
-HangulGuidedOCR is a Swift Package that wraps Apple Vision OCR and adds Korean-oriented preprocessing and postprocessing for vertical text, multi-column signs, subway station labels, and dispersed typography posters.
+[![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org)
+[![Platforms](https://img.shields.io/badge/platforms-iOS%2016%2B%20%7C%20macOS%2013%2B-lightgrey.svg)](https://developer.apple.com/documentation/vision)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## 연구 배경 / Research Motivation
+HangulGuidedOCR is a Swift Package for correcting Korean reading-order failures produced by Apple Vision OCR. The library does not replace Apple Vision. Instead, it wraps Vision observations with DeepSolo-inspired ordered point proxies, layout evidence, duplicate suppression, and optional Korean vocabulary priors so that vertical station labels, dispersed poster titles, and stylized Korean layouts can be reconstructed in the order a Korean reader expects.
 
-Apple Vision OCR은 iOS/macOS 앱에서 바로 사용할 수 있는 강력한 OCR 엔진이지만, 한국어 실제 사진에서는 다음 문제가 자주 발생합니다.
+> Main public repository: `wjdalswl/HangulGuidedOCR`  
+> Experimental workspace/archive: `wjdalswl/textspotting-guided-vision-ocr`
 
-- 세로쓰기에서 어떤 열부터 읽어야 하는지 틀림
-- 지하철 역명판처럼 한글과 영어가 섞인 세로 안내문에서 한글 역명을 부분적으로만 복원함
-- 포스터형 분산 타이포그래피에서 큰 글자 일부만 검출하고 문장 순서를 놓침
-- Vision OCR raw 결과는 bbox를 반환하지만 앱 개발자가 이를 DeepSolo식 ordered point sequence로 변환해 한국어 읽기 순서에 활용하기 어렵다
+## Reports
 
-This library is inspired by DeepSolo's ordered points and boundary representation. It does not train a new OCR model. Instead, it converts Apple Vision OCR observations into `(P_i, y_i, s_i)`-style point proxies, accepts pre-OCR spotting proposals, and helps app developers guide Apple Vision OCR with ROI boundaries, rotation, scaling, contrast, reading-order strategies, repeated-point decoding, overlap suppression, and expected vocabulary correction.
+- [Korean final report](reports/final_report_ko.pdf)
+- [English final report](reports/final_report_en.pdf)
+- [Library design notes](docs/library_design.md)
+- [Method details](docs/method.md)
+- [Experiment protocol](docs/experiment_protocol.md)
+- [DeepSolo proxy reproduction notes](docs/deepsolo_proxy_reproduction.md)
 
-기본값은 `HangulReadingStrategy.automatic`입니다. 앱 개발자는 일반 포스터에서도 `HangulGuidedOCR`을 계속 호출하고, 라이브러리 내부 auto strategy가 raw Vision 순서가 이미 좋은 경우에는 재정렬을 생략합니다. 세로쓰기·다열 안내문·분산 타이포그래피처럼 reading-order 보정이 필요한 layout에서만 자동 또는 명시 전략으로 component를 다시 조립합니다.
+## Method Overview
 
-## DeepSolo식 점 처리 반영 / DeepSolo-inspired Point Handling
+![Overall system overview](figures/overall_system_overview.png)
 
-| DeepSolo 관점 | HangulGuidedOCR 반영 |
-|---|---|
-| ordered center points | `HangulPointProxyBuilder`가 Vision observation마다 25개 중심선 point를 생성 |
-| text boundary points | observation/proposal boundary를 `HangulOrderedPoint` polygon으로 보존 |
-| point proposal before recognition | `HangulSpottingProposal`로 OCR 전 ROI와 ordered spot을 지정 |
-| score | `HangulTextObservation.confidence`와 proposal confidence 유지 |
-| repeated point decoding | `HangulOrderedSequenceDecoder`가 `광광광복절` 같은 반복 음절을 `광복절`로 collapse |
-| duplicate point suppression | 겹치는 같은 글자 관측값은 confidence가 높은 하나만 유지 |
-| query/lexicon prior | `expectedOrder`로 역명, 포스터 문구 같은 앱 도메인 어휘를 재조립 |
+![DeepSolo-guided HangulGuidedOCR architecture](figures/deepsolo_guided_vision_ocr_architecture.png)
 
-즉 이 라이브러리는 official DeepSolo detector/recognizer를 그대로 옮긴 것이 아니라, Apple Vision OCR 위에서 재사용 가능한 **ordered point representation + spotting proposal + sequence decoding** 계층을 구현합니다.
+Apple Vision returns text observations as boxes, strings, and confidence values. HangulGuidedOCR converts each observation into a DeepSolo-style ordered point proxy:
 
-## 설치 / Installation
+```text
+I -> {(P_i, y_i, s_i)}
 
-Xcode에서:
+P_i = {p_0, ..., p_24}
+p_k = c_left + (k / 24) * (c_right - c_left)
+```
 
-1. `File > Add Package Dependencies...`
-2. GitHub URL 입력:
+The proxy is then used to decide whether the raw Vision order should be preserved or whether Korean-specific reading order should be reconstructed. The auto strategy keeps raw order for ordinary horizontal templates, but activates ordered reconstruction for vertical columns, top-to-bottom typography, or dispersed Korean title components.
+
+## Results
+
+| Evaluation set | N | Raw Vision CER | HangulGuidedOCR(auto) CER | Main interpretation |
+|---|---:|---:|---:|---|
+| Main GT aggregate | 784 | 1.209 | 0.018 | Preprocessing plus ordered reconstruction strongly reduces Korean layout failures. |
+| Core real/hard Korean cases | 20 | 0.835 | 0.005 | Vertical sign and poster failures recover when layout priors are explicit. |
+| Targeted Korean poster synthetic | 600 | 1.202 | 0.000 | Controlled vertical and multi-column Korean layouts validate the reading-order strategy. |
+| Canva/MiriCanvas manual templates | 124 | 0.060 | 0.060 | Auto strategy preserves raw Vision order when horizontal OCR is already reliable. |
+| Public Korean sign probe | 15 | 0.283 | 0.284 | General signs need task-specific ROI/term priors; automatic reorder is not always beneficial. |
+
+CER may exceed 1.0 when the predicted string contains many insertions relative to a short ground-truth target. Therefore, aggregate CER should be interpreted together with per-subset standard deviation and layout category.
+
+![Main CER comparison](figures/hangul_guided_ocr_cer_comparison.png)
+
+![Pre/post ablation comparison](figures/pre_post_ablation_cer_comparison.png)
+
+## Representative Cases
+
+| Case | Figure | Takeaway |
+|---|---|---|
+| Subway vertical station sign | ![Subway recovery](figures/subway_vertical_reading_process_column.png) | Korean columns are reordered using layout evidence and expected station order. |
+| Dispersed typography poster | ![Typography recovery](figures/typography_ordered_component_process_column.png) | Component strips recover top-to-bottom Korean title order. |
+| Stylized title spotting failure | ![Stylized title proposal](figures/stylized_spotting_failure_process.jpg) | A pre-OCR ordered spot proposal helps when the title is not detected as text at all. |
+
+## Installation
+
+Add the package in Xcode:
 
 ```text
 https://github.com/wjdalswl/HangulGuidedOCR.git
 ```
 
-Swift Package Manager:
+Or add it to `Package.swift`:
 
 ```swift
 .package(url: "https://github.com/wjdalswl/HangulGuidedOCR.git", branch: "main")
 ```
 
-## 사용 예시 / Usage
-
-### 지하철 세로 역명판
-
-세로로 적힌 한국어 역명판에서 영어 병기 위→아래 순서와 같은 역명 순서로 `동대문역사 문화공원`을 얻는 예시입니다.
+## Quick Start
 
 ```swift
 import HangulGuidedOCR
 
-let ocr = HangulGuidedOCR()
+let observations: [HangulOCRObservation] = [
+    .init(text: "동대문역사", confidence: 0.91, boundingBox: .init(x: 0.10, y: 0.20, width: 0.12, height: 0.60)),
+    .init(text: "문화공원", confidence: 0.89, boundingBox: .init(x: 0.24, y: 0.20, width: 0.12, height: 0.60))
+]
 
-let result = try ocr.recognize(
-    cgImage,
-    configuration: HangulOCRConfiguration(
-        recognitionLevel: .accurate,
-        imageTransforms: [
-            .cropNormalized(CGRect(x: 0.35, y: 0.20, width: 0.22, height: 0.58)),
-            .rotate90Clockwise,
-            .upscale(2.0),
-            .contrast(1.4),
-        ],
-        readingGuide: HangulReadingGuide(
-            strategy: .verticalColumnsLeftToRight,
-            expectedOrder: ["동대문역사", "문화공원"]
-        )
-    )
+let result = HangulGuidedOCR().correct(
+    observations,
+    options: .init(strategy: .auto, expectedOrder: ["동대문역사", "문화공원"])
 )
 
-print(result.rawText)
-print(result.guidedText) // 동대문역사 문화공원
-print(result.resolvedStrategy) // verticalColumnsLeftToRight
-print(result.pointProxies.first?.orderedPoints.count) // 25
+print(result.text)
 ```
 
-### 분산 타이포그래피 포스터
+## Scope and Limitations
 
-`user_typography_wall`처럼 위에서 아래로 읽어야 하는 포스터에서 `예쁜 그림을 그리고 싶다`를 얻는 예시입니다.
+HangulGuidedOCR is currently validated for Korean Apple Vision OCR output. It is strongest when text is present but reading order is unstable, or when a small title ROI can be proposed before OCR. It is not a replacement for a full text spotting model, and it cannot recover invisible or severely blurred characters without a usable crop or detection proposal.
 
-```swift
-let result = try ocr.recognize(
-    cgImage,
-    configuration: HangulOCRConfiguration(
-        recognitionLevel: .accurate,
-        imageTransforms: [
-            .cropNormalized(CGRect(x: 0.25, y: 0.20, width: 0.45, height: 0.42)),
-            .upscale(3.0),
-            .contrast(1.8),
-        ],
-        readingGuide: HangulReadingGuide(
-            strategy: .topToBottomRows,
-            expectedOrder: ["예쁜", "그림을", "그리고", "싶다"]
-        )
-    )
-)
+Raw local template images from Canva/MiriCanvas and large generated datasets are intentionally excluded from the public repository. The repository publishes only summary metrics, report figures, protocol notes, and final report PDFs.
 
-print(result.guidedText) // 예쁜 그림을 그리고 싶다
+## Citation
+
+```bibtex
+@misc{hangulguidedocr2026,
+  title  = {HangulGuidedOCR: DeepSolo-style Ordered Point Guidance for Korean Apple Vision OCR},
+  author = {Jeong, Minji},
+  year   = {2026},
+  howpublished = {\url{https://github.com/wjdalswl/HangulGuidedOCR}}
+}
 ```
 
-### OCR 전 ordered spot proposal
+## Acknowledgements
 
-장식적 세로 제목처럼 Vision OCR이 원본에서 글자를 아예 검출하지 못하는 경우에는, OCR 전에 텍스트 후보 영역을 ordered point proposal로 지정할 수 있습니다.
+This project is motivated by DeepSolo's explicit ordered point representation for scene text spotting and adapts that idea to a practical Swift/Xcode OCR correction library for Korean mobile apps.
 
-```swift
-let proposal = HangulSpottingProposal.fromNormalizedRect(
-    CGRect(x: 0.42, y: 0.25, width: 0.18, height: 0.50),
-    direction: .verticalTopToBottom,
-    expectedText: "광복절",
-    sampleCount: 25,
-    normalizationPadding: 0.03,
-    rotation: .clockwise90
-)
+---
 
-let result = try ocr.recognize(
-    cgImage,
-    proposal: proposal,
-    configuration: HangulOCRConfiguration(
-        recognitionLevel: .accurate,
-        imageTransforms: [
-            .upscale(2.0),
-            .contrast(1.5),
-        ]
-    )
-)
+# HangulGuidedOCR
 
-print(result.guidedText) // 광복절
-```
+**한국어 Apple Vision OCR을 위한 DeepSolo식 ordered point 기반 읽기 순서 보정 Swift 라이브러리입니다.**
 
-### 일반 가로 포스터
+HangulGuidedOCR는 Apple Vision OCR을 대체하는 새 OCR 엔진이 아닙니다. Apple Vision이 반환한 bbox, 문자열, confidence를 DeepSolo에서 영감을 받은 ordered point proxy로 변환하고, 레이아웃 근거와 중복 제거, 한국어 어휘 prior를 함께 사용해 세로 역명판, 분산 타이포그래피 포스터, 장식형 한국어 제목의 읽기 순서를 보정합니다.
 
-일반 가로 포스터나 카드뉴스에서는 별도 strategy를 지정하지 않습니다. `automatic`이 raw Vision 순서를 보존하므로, HangulGuidedOCR를 항상 사용해도 불필요한 point 재정렬로 CER가 악화되지 않도록 설계했습니다.
+> 최종 공개 메인 레포: `wjdalswl/HangulGuidedOCR`  
+> 실험 작업장/아카이브 레포: `wjdalswl/textspotting-guided-vision-ocr`
 
-```swift
-let result = try ocr.recognize(cgImage)
+## 보고서
 
-print(result.guidedText)       // raw Vision order preserved
-print(result.resolvedStrategy) // rawVisionOrder
-```
+- [한국어 최종 보고서](reports/final_report_ko.pdf)
+- [영문 최종 보고서](reports/final_report_en.pdf)
+- [라이브러리 설계 노트](docs/library_design.md)
+- [방법론 설명](docs/method.md)
+- [실험 프로토콜](docs/experiment_protocol.md)
+- [DeepSolo proxy 재현 기록](docs/deepsolo_proxy_reproduction.md)
 
-## 제공 기능 / Features
+## 방법 개요
 
-| 기능 | 설명 |
-|---|---|
-| Vision OCR wrapper | Apple Vision `VNRecognizeTextRequest` 실행 |
-| ROI crop | normalized CGRect 기반 OCR 대상 영역 제한 |
-| rotation | 90도 시계/반시계 방향 회전 |
-| upscale | 작은 글자 인식을 위한 확대 |
-| contrast | 저대비 글자 보정 |
-| point proxy | Vision observation을 25개 ordered center points와 boundary points로 변환 |
-| spotting proposal | OCR 전에 ordered points와 boundary로 ROI를 지정 |
-| repeated point collapse | `광광광복절`처럼 point sequence에서 반복된 음절을 collapse |
-| overlap suppression | 같은 글자가 겹쳐 여러 번 검출된 경우 confidence가 높은 관측값만 유지 |
-| reading order | automatic, raw Vision order, horizontal, vertical left-to-right, vertical right-to-left, top-to-bottom |
-| expectedOrder correction | 앱 도메인 단어 목록 기반 재정렬 및 fuzzy correction |
-
-## API 구성 / API Overview
+Apple Vision은 텍스트 관측값을 bbox, 문자열, confidence로 반환합니다. HangulGuidedOCR는 각 관측값을 DeepSolo식 ordered point proxy로 바꿉니다.
 
 ```text
-Sources/HangulGuidedOCR/
-├── HangulGuidedOCR.swift
-├── HangulOCRModels.swift
-├── HangulImagePreprocessor.swift
-├── HangulPointProxyBuilder.swift
-├── HangulSpottingProposal.swift
-├── HangulOrderedSequenceDecoder.swift
-├── HangulReadingOrderResolver.swift
-└── HangulLexiconCorrector.swift
+I -> {(P_i, y_i, s_i)}
+
+P_i = {p_0, ..., p_24}
+p_k = c_left + (k / 24) * (c_right - c_left)
 ```
 
-## 테스트 / Tests
+이 proxy는 raw Vision 순서를 유지할지, 한국어 레이아웃에 맞게 재구성할지 판단하는 근거가 됩니다. 일반 가로형 템플릿에서는 raw 순서를 유지하고, 세로 열, 위에서 아래로 읽는 타이포그래피, 분산된 제목 컴포넌트에서는 ordered reconstruction을 활성화합니다.
 
-```bash
-swift test
-```
+## 결과 요약
 
-현재 테스트는 다음 시나리오를 확인합니다.
+| 평가 세트 | N | Raw Vision CER | HangulGuidedOCR(auto) CER | 해석 |
+|---|---:|---:|---:|---|
+| 전체 GT aggregate | 784 | 1.209 | 0.018 | 전처리와 ordered reconstruction을 함께 쓰면 한국어 레이아웃 실패가 크게 줄어듭니다. |
+| 핵심 실제/난이도 높은 한국어 사례 | 20 | 0.835 | 0.005 | 세로 간판과 포스터 실패는 explicit layout prior가 있을 때 복구됩니다. |
+| 한국어 포스터 targeted synthetic | 600 | 1.202 | 0.000 | 통제된 세로/다열 한국어 레이아웃에서 reading-order 전략을 검증했습니다. |
+| Canva/MiriCanvas 수동 전사 템플릿 | 124 | 0.060 | 0.060 | 일반 가로형에서는 auto strategy가 재정렬을 생략해야 함을 확인했습니다. |
+| 공개 한글 간판 probe | 15 | 0.283 | 0.284 | 일반 간판은 자동 재정렬보다 task-specific ROI/term prior가 중요합니다. |
 
-- 일반 가로 포스터: 기본 `automatic`이 `rawVisionOrder`로 판단해 raw 순서를 보존
-- image transform: ROI crop, 90도 회전, upscale, contrast가 CGImage에 적용됨
-- 지하철 세로 역명판: 기본 `automatic`이 point proxy와 expected order를 이용해 `동대문역사 문화공원`으로 재조립
-- 전통 세로쓰기: `verticalColumnsRightToLeft`가 오른쪽 열부터 위→아래로 정렬
-- 분산 타이포그래피: 기본 `automatic`이 `topToBottomRows`로 판단해 `예쁜 그림을 그리고 싶다`로 보정
-- Vision observation에서 DeepSolo-style `(P_i, y_i, s_i)` ordered point proxy 생성
-- OCR 전 `HangulSpottingProposal`이 normalized rect를 25개 ordered point와 boundary로 변환
-- DeepSolo/CTC식 반복 point decoding으로 `광광광복절`을 `광복절`로 collapse
-- 겹치는 중복 point prediction에서 confidence가 높은 글자만 유지
-- 지하철 세로 역명판: `동대문역사`, `문화공원` raw component를 `동대문역사 문화공원`으로 재조립
-- 분산 타이포그래피: `예는 그림을 그리고 싶다` raw 결과를 `예쁜 그림을 그리고 싶다`로 보정
+CER은 짧은 정답 문자열에 비해 예측 문자열의 삽입 오류가 많을 때 1.0을 넘을 수 있습니다. 따라서 aggregate CER은 subset별 표준편차와 레이아웃 유형을 함께 해석해야 합니다.
 
-## 연구 repo / Research Repository
+## 대표 사례
 
-실험 과정, DeepSolo 재현 기록, Apple Vision OCR 비교 결과, 최종보고서는 별도 연구 repo에 정리되어 있습니다.
+| 사례 | 그림 | 핵심 |
+|---|---|---|
+| 지하철 세로 역명판 | ![Subway recovery](figures/subway_vertical_reading_process_column.png) | 한국어 열을 영어 병기와 역명 순서에 맞게 재배열합니다. |
+| 분산 타이포그래피 포스터 | ![Typography recovery](figures/typography_ordered_component_process_column.png) | 컴포넌트 strip을 통해 위에서 아래로 읽는 제목 순서를 복구합니다. |
+| 장식형 제목 검출 실패 | ![Stylized title proposal](figures/stylized_spotting_failure_process.jpg) | 텍스트로 검출되지 않는 제목은 pre-OCR ordered spot proposal이 필요합니다. |
+
+## 설치
+
+Xcode에서 아래 URL을 Swift Package로 추가합니다.
 
 ```text
-https://github.com/wjdalswl/textspotting-guided-vision-ocr
+https://github.com/wjdalswl/HangulGuidedOCR.git
 ```
 
-## 한계 / Limitations
+또는 `Package.swift`에 추가합니다.
 
-- 이 라이브러리는 Apple Vision OCR을 대체하지 않습니다.
-- 완전 자동 text spotting detector를 학습하지는 않지만, 앱 개발자나 외부 detector가 만든 `HangulSpottingProposal`을 받아 OCR 전 ordered spot 보정을 수행할 수 있습니다.
-- 복잡한 실제 이미지에서는 샘플 유형별 ROI 탐색 또는 별도 text detector가 필요할 수 있습니다.
+```swift
+.package(url: "https://github.com/wjdalswl/HangulGuidedOCR.git", branch: "main")
+```
 
-## License
+## 범위와 한계
 
-MIT License.
-
-이미지 샘플, 연구용 benchmark, 최종보고서, DeepSolo 재현 기록은 companion research repo인 `textspotting-guided-vision-ocr`에서 관리합니다. 이 repo는 앱 개발자가 import해서 사용할 수 있는 Swift Package 코드와 API 문서를 중심으로 둡니다.
-
-Image samples, research benchmarks, final reports, and DeepSolo reproduction logs are maintained in the companion `textspotting-guided-vision-ocr` repository. This repository focuses on the Swift Package implementation and developer-facing API documentation.
+현재 검증 범위는 한국어 Apple Vision OCR 결과입니다. 글자가 검출되었지만 읽기 순서가 불안정한 경우, 또는 작은 제목 ROI를 OCR 전에 제안할 수 있는 경우에 가장 효과적입니다. 완전한 text spotting 모델을 대체하지 않으며, 글자가 보이지 않거나 심하게 흐린 경우에는 별도의 detection proposal 또는 crop이 필요합니다.

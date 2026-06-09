@@ -1,0 +1,8 @@
+set,role,n,ground_truth,raw_metric,guided_metric,delta,hangul_guided_ocr_contribution
+core_target_korean_real_pilot,핵심 실제 한국어 실패 사례,4,yes,"CER 0.425, recall 0.604","CER 0.023, recall 0.958","CER -0.402, recall +0.354","ordered point proxy, topToBottomRows, expectedOrder/fuzzy correction API의 직접 근거"
+controlled_hard_poster_sign_expansion,새 세로쓰기/간판형 hard Korean layout 16개,16,yes,CER 0.938±0.250,CER 0.000±0.000,CER -0.938±0.250,세로쓰기 포스터/간판 조건에서 raw Vision이 검출 실패하거나 순서를 잃는 상황을 controlled 방식으로 보강
+core_real_expanded_gt_20,기존 hard real 4개 + 새 세로쓰기/간판형 hard layout 16개,20,yes-subset,CER 0.835±0.336,HangulGuidedOCR(auto) CER 0.005±0.020,CER -0.830±0.347,핵심 실패 주장을 4개 사례에만 의존하지 않도록 세로쓰기/간판형 failure를 20개 대표 세트로 확장
+targeted_korean_poster_synthetic,한국어 포스터/카드뉴스 layout 통제 실험,600,yes,"CER 1.202, recall 0.403","CER 0.000, recall 1.000","CER -1.202, recall +0.597",세로 안내문/다열 포스터에서 boundary와 reading order prior가 먼저 필요하다는 통제 근거
+public_korean_signs_probe,공개 한글 간판 실제 사진 검출 안정성,16,no,"nonempty 1.000, hangul_output 1.000",CER/WER not computed without manual GT,manual transcription required,복잡 간판에서는 단순 full-image OCR보다 ROI/term filtering/expected vocabulary가 필요함을 보여주는 real probe
+local_user_poster_probe,사용자 제공 한국어 포스터 4장 로컬 probe,4,terms/partial,"term recall 0.396, obs 5.0, conf 0.408",guided term recall 0.396,layout-specific full correction handled in target pilot,포스터별 reading_order와 expected terms가 필요한 실제 사용자 이미지 근거
+manual_gt_local_templates,사람 전사 GT가 입력된 Canva/MiriCanvas 포스터·카드뉴스,124,yes,"CER 0.060, WER 0.087",proxy CER 0.191; HangulGuidedOCR(auto) CER 0.060,proxy delta -0.130; auto delta 0.000,"일반 가로형 템플릿은 raw Vision이 강하므로, HangulGuidedOCR를 항상 사용하되 내부 auto strategy가 horizontal layout에서 재정렬을 생략해야 함을 검증"

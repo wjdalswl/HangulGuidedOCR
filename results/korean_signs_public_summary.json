@@ -1,0 +1,13 @@
+{
+  "dataset": "Kratos-AI/Korean-Signs-Image-Dataset",
+  "split": "train",
+  "n": 16,
+  "ocr_level": "accurate",
+  "mean_observation_count": 16.75,
+  "mean_confidence": 0.6117496414797192,
+  "mean_duration_ms": 316.34894758462906,
+  "mean_normalized_text_length": 92,
+  "mean_hangul_char_count": 57.875,
+  "hangul_output_rate": 1.0,
+  "nonempty_output_rate": 1.0
+}

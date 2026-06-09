@@ -1,0 +1,108 @@
+{
+  "summary": {
+    "evaluation_scope": "HangulGuidedOCR public aggregate summary",
+    "reported_ground_truth_samples": 784,
+    "main_gt_raw_vision_cer": 1.209391711734694,
+    "main_gt_pre_only_cer": 0.06690843239795918,
+    "main_gt_post_only_cer": 1.0963962831632652,
+    "main_gt_pre_plus_post_cer": 0.017547126275510205,
+    "manual_gt_template_samples": 124,
+    "public_korean_sign_gt_samples": 15,
+    "core_real_expanded": {
+      "n": 20,
+      "source_core_target_n": 4,
+      "source_controlled_hard_expansion_n": 16,
+      "selection_policy": "4 targeted hard Korean real cases + 16 controlled vertical/sign/poster hard Korean layout cases",
+      "mean_raw_cer": 0.83492555,
+      "std_raw_cer": 0.3358440715511441,
+      "mean_hangul_guided_auto_cer": 0.00454545,
+      "std_hangul_guided_auto_cer": 0.02032787037665284,
+      "mean_delta_cer_raw_minus_auto": 0.8303801,
+      "std_delta_cer_raw_minus_auto": 0.346877833232985
+    },
+    "status": "public repo keeps aggregate metrics, report figures, and transcription methodology; original local template images and candidate manifests are excluded."
+  },
+  "rows": [
+    {
+      "set": "core_target_korean_real_pilot",
+      "role": "핵심 실제 한국어 실패 사례",
+      "n": 4,
+      "ground_truth": "yes",
+      "raw_metric": "CER 0.425, recall 0.604",
+      "guided_metric": "CER 0.023, recall 0.958",
+      "delta": "CER -0.402, recall +0.354",
+      "hangul_guided_ocr_contribution": "ordered point proxy, topToBottomRows, expectedOrder/fuzzy correction API의 직접 근거"
+    },
+    {
+      "set": "controlled_hard_poster_sign_expansion",
+      "role": "새 세로쓰기/간판형 hard Korean layout 16개",
+      "n": 16,
+      "ground_truth": "yes",
+      "raw_metric": "CER 0.938±0.250",
+      "guided_metric": "CER 0.000±0.000",
+      "delta": "CER -0.938±0.250",
+      "hangul_guided_ocr_contribution": "세로쓰기 포스터/간판 조건에서 raw Vision이 검출 실패하거나 순서를 잃는 상황을 controlled 방식으로 보강"
+    },
+    {
+      "set": "core_real_expanded_gt_20",
+      "role": "기존 hard real 4개 + 새 세로쓰기/간판형 hard layout 16개",
+      "n": 20,
+      "ground_truth": "yes-subset",
+      "raw_metric": "CER 0.835±0.336",
+      "guided_metric": "HangulGuidedOCR(auto) CER 0.005±0.020",
+      "delta": "CER -0.830±0.347",
+      "hangul_guided_ocr_contribution": "핵심 실패 주장을 4개 사례에만 의존하지 않도록 세로쓰기/간판형 failure를 20개 대표 세트로 확장"
+    },
+    {
+      "set": "targeted_korean_poster_synthetic",
+      "role": "한국어 포스터/카드뉴스 layout 통제 실험",
+      "n": 600,
+      "ground_truth": "yes",
+      "raw_metric": "CER 1.202, recall 0.403",
+      "guided_metric": "CER 0.000, recall 1.000",
+      "delta": "CER -1.202, recall +0.597",
+      "hangul_guided_ocr_contribution": "세로 안내문/다열 포스터에서 boundary와 reading order prior가 먼저 필요하다는 통제 근거"
+    },
+    {
+      "set": "public_korean_signs_probe",
+      "role": "공개 한글 간판 실제 사진 검출 안정성",
+      "n": 16,
+      "ground_truth": "no",
+      "raw_metric": "nonempty 1.000, hangul_output 1.000",
+      "guided_metric": "CER/WER not computed without manual GT",
+      "delta": "manual transcription required",
+      "hangul_guided_ocr_contribution": "복잡 간판에서는 단순 full-image OCR보다 ROI/term filtering/expected vocabulary가 필요함을 보여주는 real probe"
+    },
+    {
+      "set": "local_user_poster_probe",
+      "role": "사용자 제공 한국어 포스터 4장 로컬 probe",
+      "n": 4,
+      "ground_truth": "terms/partial",
+      "raw_metric": "term recall 0.396, obs 5.0, conf 0.408",
+      "guided_metric": "guided term recall 0.396",
+      "delta": "layout-specific full correction handled in target pilot",
+      "hangul_guided_ocr_contribution": "포스터별 reading_order와 expected terms가 필요한 실제 사용자 이미지 근거"
+    },
+    {
+      "set": "manual_gt_local_templates",
+      "role": "사람 전사 GT가 입력된 Canva/MiriCanvas 포스터·카드뉴스",
+      "n": 124,
+      "ground_truth": "yes",
+      "raw_metric": "CER 0.060, WER 0.087",
+      "guided_metric": "proxy CER 0.191; HangulGuidedOCR(auto) CER 0.060",
+      "delta": "proxy delta -0.130; auto delta 0.000",
+      "hangul_guided_ocr_contribution": "일반 가로형 템플릿은 raw Vision이 강하므로, HangulGuidedOCR를 항상 사용하되 내부 auto strategy가 horizontal layout에서 재정렬을 생략해야 함을 검증"
+    }
+  ],
+  "rules": [
+    "지하철 세로 역명판은 Vision observation을 ordered point proxy로 변환하고, 영어 병기 위→아래 순서와 같은 expectedOrder로 `동대문역사 문화공원`을 재조립한다.",
+    "분산 타이포그래피 포스터는 component를 top-to-bottom rows로 정렬하고, expected vocabulary fuzzy correction을 적용한다.",
+    "핵심 hard 평가는 4개 사례에 머물지 않고, 새 세로쓰기/간판형 controlled hard expansion 16개를 더한 N=20 대표 세트로 확장해 평균과 표준편차를 함께 보고한다.",
+    "세로 안내문 포스터와 행사형 다열 포스터는 `.accurate` OCR만으로도 order failure가 크므로, ROI/boundary 지정과 reading strategy를 라이브러리 API의 1차 설정으로 둔다.",
+    "poster/card-news 계열은 원본 전체 OCR 결과와 guided unwrapped 결과를 항상 함께 저장해, 보정이 실제로 필요한 샘플과 불필요한 샘플을 분리한다.",
+    "복잡한 간판 사진은 글자가 많이 검출되어도 앱 목표 단어와 무관한 텍스트가 섞이므로, `targetTerms` 또는 expected vocabulary 기반 filtering API를 제공한다.",
+    "Canva/MiriCanvas류 템플릿은 원본을 공개하지 않는 local-private manifest로 관리하고, review 후 `target_text`, `target_terms`, `reading_order`가 채워진 샘플만 정량 benchmark에 승격한다.",
+    "전사된 Canva/MiriCanvas 124장에서는 raw CER 0.060, 무조건 proxy guided CER 0.191, HangulGuidedOCR(auto) CER 0.060으로 측정되었다. 즉 라이브러리는 항상 호출되지만 내부 auto strategy가 일반 가로형에서 재정렬을 생략해야 한다.",
+    "일반 가로형 poster/card-news 샘플은 `horizontal-lines`로 분류되면 HangulGuidedOCR 내부에서 Apple Vision raw order를 유지하고, ROI/contrast/upscale만 선택적으로 적용한다."
+  ]
+}

@@ -1,7 +1,11 @@
 .DS_Store
 .build/
 DerivedData/
-*.xcworkspace/xcuserdata/
-*.xcodeproj/xcuserdata/
-*.xcodeproj/project.xcworkspace/xcuserdata/
-*.swiftpm/
+*.xcodeproj
+*.xcworkspace
+*.xcuserstate
+*.docx
+artifacts/
+raw_data/
+private_data/
+*.log

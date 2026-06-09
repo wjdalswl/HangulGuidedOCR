@@ -1,0 +1,15 @@
+{
+  "sample_type": "public_safe_synthetic_stylized_korean_title",
+  "target": "광복절",
+  "ocr_level": "accurate",
+  "raw_target_recall": 0.0,
+  "post_only_target_recall": 0.0,
+  "pre_only_target_recall": 1.0,
+  "pre_plus_post_target_recall": 1.0,
+  "raw_text": "8 15 독립 기념 행사 전시와 체험 50% 할인 @public.sample",
+  "pre_strip_text": "광복 절",
+  "summary_csv": "artifacts/stylized_spotting_failure_probe/results/stylized_spotting_failure_probe_summary.csv",
+  "summary_json": "artifacts/stylized_spotting_failure_probe/results/stylized_spotting_failure_probe_summary.json",
+  "raw_ocr_json": "artifacts/stylized_spotting_failure_probe/results/stylized_spotting_failure_raw_ocr.json",
+  "process_figure": "artifacts/stylized_spotting_failure_probe/stylized_spotting_failure_process.jpg"
+}
