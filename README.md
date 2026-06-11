@@ -1,19 +1,19 @@
 # HangulGuidedOCR
 
-**DeepSolo-style ordered point guidance for Korean Apple Vision OCR.**
+**DeepSolo-inspired ordered point guidance for Korean Apple Vision OCR.**
 
 [![Swift](https://img.shields.io/badge/Swift-5.9+-orange.svg)](https://swift.org)
 [![Platforms](https://img.shields.io/badge/platforms-iOS%2015%2B%20%7C%20macOS%2012%2B-lightgrey.svg)](https://developer.apple.com/documentation/vision)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-HangulGuidedOCR is a Swift Package for correcting Korean reading-order failures produced by Apple Vision OCR. It does not replace Apple Vision. Instead, it wraps Vision observations with DeepSolo-inspired ordered point proxies, layout evidence, duplicate suppression, and optional Korean vocabulary priors so that vertical station labels, dispersed poster titles, and stylized Korean layouts can be reconstructed in the order a Korean reader expects.
+HangulGuidedOCR is a Swift Package for correcting Korean reading-order failures produced by Apple Vision OCR. It does not replace Apple Vision and does not implement the DeepSolo model. Instead, it wraps Vision observations with DeepSolo-inspired ordered point proxies, layout evidence, duplicate suppression, and optional Korean vocabulary priors so that vertical station labels, dispersed poster titles, and stylized Korean layouts can be reconstructed in the order a Korean reader expects.
 
 **Paper PDFs**
 
-- **[HangulGuidedOCR: DeepSolo-style Ordered Point Guidance for Korean Apple Vision OCR (KR)](reports/HangulGuidedOCR_Ordered_Point_Guidance_kr.pdf)**
-- **[HangulGuidedOCR: DeepSolo-style Ordered Point Guidance for Korean Apple Vision OCR (EN)](reports/HangulGuidedOCR_Ordered_Point_Guidance_en.pdf)**
+- **[HangulGuidedOCR: DeepSolo-inspired Ordered Point Guidance for Korean Apple Vision OCR (KR)](reports/HangulGuidedOCR_Ordered_Point_Guidance_kr.pdf)**
+- **[HangulGuidedOCR: DeepSolo-inspired Ordered Point Guidance for Korean Apple Vision OCR (EN)](reports/HangulGuidedOCR_Ordered_Point_Guidance_en.pdf)**
 
-![DeepSolo-guided HangulGuidedOCR architecture](figures/deepsolo_guided_vision_ocr_architecture.png)
+![DeepSolo-inspired HangulGuidedOCR architecture](figures/deepsolo_guided_vision_ocr_architecture.png)
 
 > Main public repository: `wjdalswl/HangulGuidedOCR`  
 > Experimental workspace/archive: `wjdalswl/textspotting-guided-vision-ocr`
@@ -141,11 +141,13 @@ HangulGuidedOCR is currently validated for Korean Apple Vision OCR output. It is
 
 The current public results focus on Korean signboards, subway vertical signs, typography posters, targeted synthetic Korean layouts, and manually transcribed Korean poster/sign probes. Raw local template images from Canva/MiriCanvas and large generated datasets are intentionally excluded from the public repository. The repository publishes summary metrics, report figures, protocol notes, and paper PDFs.
 
+Thresholds such as column spread and aspect-ratio gates are engineering defaults selected from pilot cases, not learned parameters. The public paper reports this limitation explicitly; a larger independent real-photo set and systematic threshold ablation are future work.
+
 ## Method Overview
 
 ![Overall system overview](figures/overall_system_overview.png)
 
-Apple Vision returns text observations as boxes, strings, and confidence values. HangulGuidedOCR converts each observation into a DeepSolo-style ordered point proxy:
+Apple Vision returns text observations as boxes, strings, and confidence values. HangulGuidedOCR converts each observation into a DeepSolo-inspired ordered point proxy:
 
 ```text
 I -> {(P_i, y_i, s_i)}
@@ -166,7 +168,7 @@ The proxy is then used to decide whether the raw Vision order should be preserve
 | Canva/MiriCanvas manual templates | 124 | 0.060 | 0.060 | Auto strategy preserves raw Vision order when horizontal OCR is already reliable. |
 | Public Korean sign probe | 15 | 0.283 | 0.284 | General signs need task-specific ROI/term priors; automatic reorder is not always beneficial. |
 
-CER may exceed 1.0 when the predicted string contains many insertions relative to a short ground-truth target. Therefore, aggregate CER should be interpreted together with per-subset standard deviation and layout category.
+CER may exceed 1.0 when the predicted string contains many insertions relative to a short ground-truth target. Therefore, aggregate CER should be interpreted together with per-subset standard deviation and layout category. In the report, the approximate 95% CI is `1.209 ± 0.110` for Main GT raw CER and `0.018 ± 0.006` for Main GT auto CER. Small sets such as public signs (`N=15`) are treated as probes, not definitive benchmark claims.
 
 ![Main CER comparison](figures/hangul_guided_ocr_cer_comparison.png)
 
@@ -184,7 +186,7 @@ CER may exceed 1.0 when the predicted string contains many insertions relative t
 
 ```bibtex
 @misc{hangulguidedocr2026,
-  title  = {HangulGuidedOCR: DeepSolo-style Ordered Point Guidance for Korean Apple Vision OCR},
+  title  = {HangulGuidedOCR: DeepSolo-inspired Ordered Point Guidance for Korean Apple Vision OCR},
   author = {Jeong, Minji},
   year   = {2026},
   howpublished = {\url{https://github.com/wjdalswl/HangulGuidedOCR}}

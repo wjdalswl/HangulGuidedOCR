@@ -28,8 +28,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 107.372,
       "guided_duration_ms": 190.558,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_sign_001.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_001__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_sign_001.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_001__guided.jpg",
       "note": "지하철 세로 역명판형: 영어 병기 위→아래 순서와 같은 역명 순서로 재조립"
     },
     {
@@ -49,8 +49,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 103.058,
       "guided_duration_ms": 101.294,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_sign_002.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_002__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_sign_002.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_002__guided.jpg",
       "note": "역명/시설명 세로 병렬 표기"
     },
     {
@@ -70,8 +70,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 117.059,
       "guided_duration_ms": 100.982,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_sign_003.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_003__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_sign_003.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_003__guided.jpg",
       "note": "공공 안내문형 세로 두 열"
     },
     {
@@ -91,8 +91,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 97.372,
       "guided_duration_ms": 119.555,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_sign_004.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_004__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_sign_004.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_004__guided.jpg",
       "note": "센터 안내문형 세로 표기"
     },
     {
@@ -112,8 +112,8 @@
       "guided_confidence": 0.5,
       "raw_duration_ms": 110.492,
       "guided_duration_ms": 90.266,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_poster_005.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_005__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_poster_005.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_005__guided.jpg",
       "note": "도서관 포스터 세로 제목"
     },
     {
@@ -133,8 +133,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 103.753,
       "guided_duration_ms": 96.386,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_poster_006.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_006__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_poster_006.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_006__guided.jpg",
       "note": "모집 포스터 세로 제목"
     },
     {
@@ -154,8 +154,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 87.486,
       "guided_duration_ms": 83.091,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_poster_007.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_007__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_poster_007.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_007__guided.jpg",
       "note": "행사 포스터 세로 제목"
     },
     {
@@ -175,8 +175,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 109.319,
       "guided_duration_ms": 89.331,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_poster_008.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_008__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_poster_008.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_008__guided.jpg",
       "note": "축제 안내 포스터 세로 제목"
     },
     {
@@ -196,8 +196,8 @@
       "guided_confidence": 0.5,
       "raw_duration_ms": 113.176,
       "guided_duration_ms": 96.835,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_poster_009.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_009__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_poster_009.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_009__guided.jpg",
       "note": "포스터형 세로 카피"
     },
     {
@@ -217,8 +217,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 94.11,
       "guided_duration_ms": 84.859,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_poster_010.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_010__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_poster_010.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_poster_010__guided.jpg",
       "note": "전시 포스터 세로 카피"
     },
     {
@@ -238,8 +238,8 @@
       "guided_confidence": 0.5,
       "raw_duration_ms": 99.507,
       "guided_duration_ms": 133.82,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_notice_011.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_notice_011__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_notice_011.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_notice_011__guided.jpg",
       "note": "안전 안내문 세로 병렬 표기"
     },
     {
@@ -259,8 +259,8 @@
       "guided_confidence": 0.5,
       "raw_duration_ms": 164.208,
       "guided_duration_ms": 130.707,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_sign_012.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_012__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_sign_012.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_012__guided.jpg",
       "note": "식당 간판 메뉴 세로 병렬 표기"
     },
     {
@@ -280,8 +280,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 115.668,
       "guided_duration_ms": 141.556,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_notice_013.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_notice_013__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_notice_013.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_notice_013__guided.jpg",
       "note": "센터 안내 포스터"
     },
     {
@@ -301,8 +301,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 97.826,
       "guided_duration_ms": 97.581,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_notice_014.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_notice_014__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_notice_014.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_notice_014__guided.jpg",
       "note": "도서관 안내 포스터"
     },
     {
@@ -322,8 +322,8 @@
       "guided_confidence": 0.5,
       "raw_duration_ms": 94.922,
       "guided_duration_ms": 100.965,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_vertical_sign_015.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_015__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_vertical_sign_015.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_vertical_sign_015__guided.jpg",
       "note": "시설 안내 간판"
     },
     {
@@ -343,8 +343,8 @@
       "guided_confidence": 1.0,
       "raw_duration_ms": 168.37,
       "guided_duration_ms": 106.664,
-      "source_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/source/hard_typography_016.jpg",
-      "guided_image_path": "/Users/jeongminji/Developer/textspotting-guided-vision-ocr/artifacts/core_real_failure_expansion/guided_unwrapped/hard_typography_016__guided.jpg",
+      "source_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/source/hard_typography_016.jpg",
+      "guided_image_path": "https://github.com/wjdalswl/textspotting-guided-vision-ocr/tree/main/datasets/core_real_failure_expansion/guided_unwrapped/hard_typography_016__guided.jpg",
       "note": "분산 타이포그래피: 위에서 아래로 component를 재배치"
     }
   ]
