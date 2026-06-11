@@ -10,8 +10,8 @@ HangulGuidedOCR is a Swift Package for correcting Korean reading-order failures 
 
 **Paper PDFs**
 
-- **[HangulGuidedOCR: DeepSolo-inspired Ordered Point Guidance for Korean Apple Vision OCR (KR)](reports/HangulGuidedOCR_Ordered_Point_Guidance_kr.pdf)**
-- **[HangulGuidedOCR: DeepSolo-inspired Ordered Point Guidance for Korean Apple Vision OCR (EN)](reports/HangulGuidedOCR_Ordered_Point_Guidance_en.pdf)**
+- **[HangulGuidedOCR: DeepSolo-inspired Ordered-Point Guidance for Korean OCR Correction (KR)](reports/hangulguidedocr_final_report_kr.pdf)**
+- **[HangulGuidedOCR: DeepSolo-inspired Ordered-Point Guidance for Korean OCR Correction (EN)](reports/hangulguidedocr_final_report_en.pdf)**
 
 ![DeepSolo-inspired HangulGuidedOCR architecture](figures/deepsolo_guided_vision_ocr_architecture.png)
 
