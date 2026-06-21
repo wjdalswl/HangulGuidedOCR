@@ -1,0 +1,26 @@
+engine,engine_label,dataset,dataset_label,variant,variant_label,n,n_gt,mean_cer,mean_wer,mean_term_recall,mean_duration_ms,nonempty_rate,error_count
+easyocr_ko_en_cpu,EasyOCR,core_hard,Core hard,guided_unwrapped,Guided strip,16,16,0.022917,0.018544,0.9375,1530.503,1.0,0
+easyocr_ko_en_cpu,EasyOCR,core_hard,Core hard,original,Original,16,16,0.839732,0.839974,0.03125,5348.302875,1.0,0
+easyocr_ko_en_cpu,EasyOCR,public_signs,Public signs,original,Original,16,0,,,,5607.013437,1.0,0
+easyocr_ko_en_cpu,EasyOCR,stylized_title,Stylized title,ordered_spot_proposal,Spot proposal,1,1,10.0,14.666667,0.0,2011.021,1.0,0
+easyocr_ko_en_cpu,EasyOCR,stylized_title,Stylized title,original,Original,1,1,9.333333,13.666667,0.0,2898.689,1.0,0
+easyocr_ko_en_cpu,EasyOCR,stylized_title,Stylized title,pre_spot_strip,Pre-spot strip,1,1,0.333333,1.0,0.0,268.913,1.0,0
+easyocr_ko_en_cpu,EasyOCR,stylized_title,Stylized title,raw_vision_boxes,Vision boxes,1,1,10.0,14.333333,0.0,2643.555,1.0,0
+easyocr_ko_en_cpu,EasyOCR,targeted_synthetic,Targeted synthetic,guided_unwrapped,Guided strip,600,600,0.066367,0.051362,0.8375,504.139497,1.0,0
+easyocr_ko_en_cpu,EasyOCR,targeted_synthetic,Targeted synthetic,original,Original,600,600,1.393378,1.485116,0.346278,4134.89339,1.0,0
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,core_hard,Core hard,guided_unwrapped,Guided strip,16,16,0.459127,0.437345,0.6875,6056.341125,1.0,0
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,core_hard,Core hard,original,Original,16,16,0.635615,0.661325,0.625,40523.740437,1.0,0
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,public_signs,Public signs,original,Original,16,0,,,,16597.16175,1.0,0
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,stylized_title,Stylized title,ordered_spot_proposal,Spot proposal,1,1,6.333333,10.0,0.0,8919.679,1.0,0
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,stylized_title,Stylized title,original,Original,1,1,5.666667,8.0,1.0,10643.007,1.0,0
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,stylized_title,Stylized title,pre_spot_strip,Pre-spot strip,1,1,1.333333,2.0,0.0,2008.387,1.0,0
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,stylized_title,Stylized title,raw_vision_boxes,Vision boxes,1,1,5.666667,8.666667,0.0,8157.247,1.0,0
+tesseract_kor_eng_psm6,Tesseract,core_hard,Core hard,guided_unwrapped,Guided strip,16,16,0.095833,0.09478,0.890625,155.470438,0.9375,0
+tesseract_kor_eng_psm6,Tesseract,core_hard,Core hard,original,Original,16,16,1.254762,1.79438,0.015625,322.84225,1.0,0
+tesseract_kor_eng_psm6,Tesseract,public_signs,Public signs,original,Original,16,0,,,,971.024063,1.0,0
+tesseract_kor_eng_psm6,Tesseract,stylized_title,Stylized title,ordered_spot_proposal,Spot proposal,1,1,6.666667,8.666667,0.0,226.67,1.0,0
+tesseract_kor_eng_psm6,Tesseract,stylized_title,Stylized title,original,Original,1,1,6.333333,8.0,0.0,225.769,1.0,0
+tesseract_kor_eng_psm6,Tesseract,stylized_title,Stylized title,pre_spot_strip,Pre-spot strip,1,1,1.666667,2.666667,0.0,179.27,1.0,0
+tesseract_kor_eng_psm6,Tesseract,stylized_title,Stylized title,raw_vision_boxes,Vision boxes,1,1,8.666667,12.666667,0.0,461.014,1.0,0
+tesseract_kor_eng_psm6,Tesseract,targeted_synthetic,Targeted synthetic,guided_unwrapped,Guided strip,600,600,0.081602,0.077829,0.945833,158.026913,1.0,0
+tesseract_kor_eng_psm6,Tesseract,targeted_synthetic,Targeted synthetic,original,Original,600,600,1.438961,1.573521,0.262389,278.258722,0.966667,0

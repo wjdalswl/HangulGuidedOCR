@@ -25,6 +25,21 @@ HangulGuidedOCR is a Swift Package for correcting Korean reading-order failures 
 - [Method details](docs/method.md)
 - [Experiment protocol](docs/experiment_protocol.md)
 - [DeepSolo proxy reproduction notes](docs/deepsolo_proxy_reproduction.md)
+- [Open OCR baseline comparison](docs/open_ocr_baseline_comparison.md)
+
+
+## Reproducibility Map
+
+| Need | Public location |
+|---|---|
+| Swift/Xcode package source | `Sources/HangulGuidedOCR/` |
+| Unit tests | `Tests/HangulGuidedOCRTests/` and `swift test` |
+| Installation and app usage | `Installation`, `Usage`, `docs/usage.md` |
+| Method and implementation rationale | `Method Overview`, `docs/method.md`, `docs/library_design.md` |
+| Experiment protocol | `docs/experiment_protocol.md` |
+| Public OCR baseline summary | `docs/open_ocr_baseline_comparison.md`, `results/open_ocr_baselines/` |
+| Figures and representative cases | `figures/` and `Representative Cases` |
+| Full experiment workspace | `https://github.com/wjdalswl/textspotting-guided-vision-ocr` |
 
 ## Installation
 
@@ -173,6 +188,25 @@ CER may exceed 1.0 when the predicted string contains many insertions relative t
 ![Main CER comparison](figures/hangul_guided_ocr_cer_comparison.png)
 
 ![Pre/post ablation comparison](figures/pre_post_ablation_cer_comparison.png)
+
+### Open OCR Baseline Check
+
+Apple Vision OCR is a closed-source black-box baseline, so the companion
+experiment repository also evaluates Tesseract, EasyOCR, and PaddleOCR. The
+goal is to check whether ordered/spot-guided inputs help OCR engines beyond
+Apple Vision.
+
+| Engine | Scope | GT rows | Target O/G | Core O/G | Title O/S |
+|---|---|---:|---:|---:|---:|
+| EasyOCR | full | 1236 | 1.393 / 0.066 | 0.840 / 0.023 | 9.333 / 0.333 |
+| Tesseract | full | 1236 | 1.439 / 0.082 | 1.255 / 0.096 | 6.333 / 1.667 |
+| PaddleOCR | bounded | 36 | -- | 0.636 / 0.459 | 5.667 / 1.333 |
+
+![Open OCR baseline comparison](figures/open_ocr_baseline_cer_comparison.png)
+
+The open OCR comparison supports the interpretation that HangulGuidedOCR is
+not an Apple Vision internal improvement. It is a reusable layout and
+ordered-point correction layer around OCR engines.
 
 ## Representative Cases
 

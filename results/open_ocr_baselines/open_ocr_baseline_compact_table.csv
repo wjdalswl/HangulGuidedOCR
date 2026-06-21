@@ -1,0 +1,4 @@
+engine,engine_label,scope,total_rows,gt_rows,targeted_synthetic__original__cer,targeted_synthetic__guided_unwrapped__cer,core_hard__original__cer,core_hard__guided_unwrapped__cer,stylized_title__original__cer,stylized_title__pre_spot_strip__cer
+easyocr_ko_en_cpu,EasyOCR,full public subset,1252,1236,1.393378,0.066367,0.839732,0.022917,9.333333,0.333333
+paddleocr_korean_ppocrv5_cpu,PaddleOCR,runtime-bounded subset,52,36,,,0.635615,0.459127,5.666667,1.333333
+tesseract_kor_eng_psm6,Tesseract,full public subset,1252,1236,1.438961,0.081602,1.254762,0.095833,6.333333,1.666667

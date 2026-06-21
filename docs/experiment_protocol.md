@@ -13,6 +13,14 @@ The public repository keeps reproducible summaries rather than raw private datas
 
 The main reported aggregate contains 784 ground-truth samples. Raw Vision, preprocessing-only, postprocessing-only, and preprocessing-plus-postprocessing variants are compared. The final public claim is based on the always-on `HangulGuidedOCR(auto)` mode, not on manually choosing the best branch after seeing the result.
 
+Because Apple Vision OCR is a closed-source API, an additional open OCR check
+was added with Tesseract, EasyOCR, and PaddleOCR. Tesseract and EasyOCR were
+run on the full public subset, while PaddleOCR was run on a runtime-bounded
+subset due to CPU-only execution time on macOS arm64. The purpose of this
+comparison is to show that the contribution is a text-region and ordered-point
+correction strategy around OCR engines, not an internal Apple Vision model
+modification.
+
 Original Canva/MiriCanvas template images are not redistributed. The repository includes only summary metrics, protocol notes, figures, and final reports.
 
 ## Korean
@@ -27,5 +35,12 @@ Original Canva/MiriCanvas template images are not redistributed. The repository 
 | 공개 한글 간판 probe | 15 | 보조적인 실제 환경 probe로 사용한 공개 간판 사진 수동 GT입니다. |
 
 주요 aggregate는 GT가 있는 784개 샘플입니다. Raw Vision, 전처리만, 후처리만, 전처리+후처리를 비교합니다. 최종 주장은 결과를 보고 분기를 고른 것이 아니라, 항상 호출되는 `HangulGuidedOCR(auto)` 모드 기준입니다.
+
+Apple Vision OCR은 closed-source API이므로 Tesseract, EasyOCR, PaddleOCR을
+추가 공개 OCR 비교군으로 실행했습니다. Tesseract와 EasyOCR은 공개 가능
+subset 전체에 대해 실행했고, PaddleOCR은 macOS arm64 CPU 실행 시간이 커서
+runtime-bounded subset에 한해 실행했습니다. 이 비교의 목적은 본 기여가
+Apple Vision 내부 모델 수정이 아니라, OCR 엔진 앞뒤에서 text region과
+ordered-point representation을 구조화하는 보정 전략임을 보이는 것입니다.
 
 Canva/MiriCanvas 원본 템플릿 이미지는 재배포하지 않습니다. 공개 레포에는 요약 metric, protocol note, figure, 최종 보고서만 포함합니다.
